@@ -1,0 +1,1 @@
+This repository contains a collection of SystemVerilog and Verilog projects I have worked on during my learning journey. Projects may be uploaded in batches as I continue to explore and implement new concepts.
