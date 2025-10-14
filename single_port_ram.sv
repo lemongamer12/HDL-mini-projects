@@ -1,16 +1,22 @@
-module ram1(input logic[7:0] data,
-           input logic[5:0] addr,
-           input logic we,
-           input logic clk,
-           output logic [7:0] q);//data can be written only when we is true/1 and clk is high
-  logic [7:0] ram[63:0];//64 locations to store the data
-  logic addr_reg;
-  always_ff@(posedge clk)
-    begin
-      if(we)
-        ram[addr]<=data;
-      else
-        addr_reg<=addr;
+module ram1(
+  input  logic [7:0] data,
+  input  logic [5:0] addr,
+  input  logic       we,
+  input  logic       clk,
+  output logic [7:0] q
+);
+  // 64 x 8-bit single-port RAM with synchronous write and synchronous read
+  logic [7:0] ram [63:0];
+  logic [5:0] addr_reg; // must match address width
+
+  always_ff @(posedge clk) begin
+    // Write on WE
+    if (we) begin
+      ram[addr] <= data;
     end
-  assign q=ram[addr];
+    // Register address every cycle for synchronous read
+    addr_reg <= addr;
+    // Synchronous read: one-cycle latency
+    q <= ram[addr_reg];
+  end
 endmodule

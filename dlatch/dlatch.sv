@@ -6,8 +6,8 @@ module dlatch (
 );
     always_latch begin
         if (rst)
-            q = 4'b0000;
+            q <= 4'b0000;
         else if (clk)
-            q = data;
+            q <= data;
     end
 endmodule
