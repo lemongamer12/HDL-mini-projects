@@ -22,4 +22,9 @@ data=4'b0110;
 data=4'b1011;
 end
 
+// Terminate the simulation after stimuli complete
+initial begin
+    #20 $finish;
+end
+
 endmodule
