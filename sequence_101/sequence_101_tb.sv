@@ -28,7 +28,7 @@ module sequence_101_fsm_tb;
         #10 in = 1;
         #10 in = 0;
         #10 in = 1;
-        #50 $stop;
+        #50 $finish;
     end
     initial begin
         $monitor("Time=%0t | Reset=%0b | In=%0b | Out=%0b", $time, reset, in, out);
