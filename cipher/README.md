@@ -1,14 +1,14 @@
 # Trivium Stream Cipher - Verilog Implementation
 
-This repository contains my hardware implementation of the Trivium stream cipher, a prominent member of the eSTREAM portfolio. The design is written in synthesizable Verilog, optimized for FPGA and ASIC targets, and features an integrated state machine to automate the initialization process. It generates a single keystream bit per clock cycle.
+This repository contains my Verilog implementation of the Trivium stream cipher, a prominent member of the eSTREAM portfolio. The design is written for simulation and verification purposes, and features an integrated state machine to automate the initialization process. It generates a single keystream bit per clock cycle.
 
 ## Design Highlights
 
 - **Specification Compliance:** Fully implements the standard Trivium specification using an 80-bit Secret Key and an 80-bit Initialization Vector (IV).
 - **Steady Throughput:** Generates exactly 1 keystream bit per clock cycle.
 - **Automated Initialization:** Features a built-in finite state machine (FSM) that autonomously handles the required 1152-cycle warm-up phase.
-- **Synthesizable RTL:** Written in clean, standard Verilog without simulation-only constructs, making it ready for hardware deployment.
-- **Resource Efficient:** Utilizes straightforward shift registers and basic logic to maintain a small area footprint.
+- **Simulation-Ready:** Written in standard Verilog for functional verification and testing.
+- **Modular Design:** Utilizes separate shift register modules for clarity and ease of testing.
 
 ## Architecture and Working Principle
 
@@ -47,9 +47,9 @@ Below are the ports for the top-level `trivium_cipher` module:
 | `ready` | Output | 1 | Asserts HIGH when the 1152 warm-up cycles are complete. |
 | `output_bit` | Output | 1 | The 1-bit keystream output. Valid only when `ready` is HIGH. |
 
-## Integration and Usage
+## Simulation and Usage
 
-Integrating this cipher into a larger design is straightforward. Instantiate the top-level module, provide the cryptographic inputs, and pulse the start signal.
+Simulating this cipher is straightforward. Instantiate the top-level module in your testbench, provide the cryptographic inputs, and pulse the start signal.
 
 ```verilog
 trivium_cipher u_trivium (
