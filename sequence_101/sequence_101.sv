@@ -13,6 +13,7 @@ module sequence_101_fsm (
     } state_t;
 
     state_t current_state, next_state;
+    logic out_next; // registered Mealy output to avoid glitches
     always_ff @(posedge clk or posedge reset) begin
         if (reset)
             current_state <= S0; 
@@ -20,7 +21,9 @@ module sequence_101_fsm (
             current_state <= next_state;
     end
     always_comb begin
-        case (current_state)
+        // Default to hold state unless a branch overrides it
+        next_state = current_state;
+        unique case (current_state)
             S0: begin
                 if (in == 1)
                     next_state = S1;
@@ -42,13 +45,23 @@ module sequence_101_fsm (
             default: next_state = S0;
         endcase
     end
+    // Compute Mealy output combinationally, then register it
     always_comb begin
-        case (current_state)
-            S0: out = 0;
-            S1: out = 0;
-            S2: out = (in == 1) ? 1 : 0;
-            default: out = 0;
+        out_next = 1'b0;
+        unique case (current_state)
+            S0: out_next = 1'b0;
+            S1: out_next = 1'b0;
+            S2: out_next = (in == 1);
+            default: out_next = 1'b0;
         endcase
+    end
+
+    // Register output to remove combinational glitches
+    always_ff @(posedge clk or posedge reset) begin
+        if (reset)
+            out <= 1'b0;
+        else
+            out <= out_next;
     end
 
 endmodule
